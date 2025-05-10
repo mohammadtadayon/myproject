@@ -20,6 +20,9 @@ username:string;
 @Column()
 password:string;
 
-  @Column({ type: 'timestamp', nullable: true })
+ /* @Column({ type: 'timestamp', nullable: true })
   lastLogin: Date;
+  */
+   @Column({ type: 'timestamp', nullable: true })
+  lastLogin: Date | null; 
 }

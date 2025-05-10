@@ -28,11 +28,20 @@ export class UserService {
       throw new Error('Invalid username or password');
     }
 
-     user.lastLogin = new Date();
+    /* user.lastLogin = new Date();
     await this.userRepository.save(user);
 
     return { message: 'Login successful', user };
-  }
+  }*/
+     const previousLogin = user.lastLogin; 
+     user.lastLogin = new Date();
+      await this.userRepository.save(user);
+        return {
+      message: 'Login successful',
+       user,
+          lastLogin: previousLogin,
+             };
+          }
  async logout(userId: number) {
     const user = await this.userRepository.findOneBy({ id: userId });
 
