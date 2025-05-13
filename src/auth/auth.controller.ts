@@ -3,12 +3,15 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @ApiOperation({ summary: 'ثبت نام' })
   async register(@Body() createUserDto: CreateUserDto) {
     return await this.authService.register(createUserDto);
   }
@@ -18,6 +21,7 @@ export class AuthController {
     return await this.authService.login(loginUserDto);
   }
    @Get('google')
+     @ApiOperation({ summary: 'ورود با Google (ریدایرکت)' })
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {
     // این متد کار خاصی نمی‌کند، فقط کاربر را به گوگل هدایت می‌کند
