@@ -26,3 +26,7 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 }
+export class FindAllDto {
+    @ApiProperty({ example: 'id1...' })
+  Id: number;
+}

@@ -23,7 +23,8 @@ export class UserService {
       ...createUserDto,
     password: hashedPassword,
   });
-    return await this.userRepository.save(user);
+    await this.userRepository.save(user);
+    return {Message: 'Registered'};
   }
   //این بدون jwt 
 /*

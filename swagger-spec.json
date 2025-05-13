@@ -1,0 +1,274 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/users/logout/{id}": {
+      "post": {
+        "operationId": "UserController_logout",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/Findall": {
+      "get": {
+        "operationId": "UserController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "finded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindAllDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "need jwt token",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registered ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "registered"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": " register",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "logged in Success & Token Resived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "User Login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "operationId": "AuthController_googleAuth",
+        "parameters": [],
+        "responses": {
+          "302": {
+            "description": "google page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "User Login with Google",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/google/redirect": {
+      "get": {
+        "operationId": "AuthController_googleAuthRedirect",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "logged in Success & Token Resived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "User Login with Google & token ",
+        "tags": [
+          "auth"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "OAuth + JWT Auth API",
+    "description": "مستندات Swagger برای احراز هویت",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "FindAllDto": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "number",
+            "example": "id1..."
+          }
+        },
+        "required": [
+          "Id"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "example": "mohammad"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "tadayon"
+          },
+          "birthDate": {
+            "format": "date-time",
+            "type": "string",
+            "example": "1995/10/29"
+          },
+          "username": {
+            "type": "string",
+            "example": "mhd_tedi"
+          },
+          "password": {
+            "type": "string",
+            "example": "Mohammad...123456"
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname",
+          "birthDate",
+          "username",
+          "password"
+        ]
+      },
+      "LoginUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": " User Email"
+          },
+          "password": {
+            "type": "string",
+            "example": "Mohammad...123456",
+            "description": "User password"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "TokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        },
+        "required": [
+          "access_token"
+        ]
+      }
+    }
+  }
+}

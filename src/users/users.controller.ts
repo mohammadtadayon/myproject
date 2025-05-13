@@ -1,8 +1,12 @@
 import { Controller, Post, Body, Param, Get, UseGuards } from '@nestjs/common';
 import { UserService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, FindAllDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtAuthGuard } from '../auth/JwtAuthGuard';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+
+
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -26,6 +30,13 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('Findall')
+   @ApiBearerAuth() 
+  @ApiOperation({ summary: 'need jwt token' })
+  @ApiResponse({
+  status: 200,
+  description: 'finded',
+  type:  FindAllDto ,
+})
   async findAll(){
     return this.userService.finnAll()
   }
