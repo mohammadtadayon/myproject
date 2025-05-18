@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { HealthModule } from './health/health.module';
+import { TerminusModule } from '@nestjs/terminus';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
       type: 'postgres',
-      host: configService.get<string>('DB_HOST'),
+      host: configService.get<string>('DB_HOST') ||'db',
       port: configService.get<number>('DB_PORT'),
       username:  configService.get<string>('DB_USERNAME'),
       password: configService.get<string>('DB_PASSWORD'),
@@ -28,7 +30,9 @@ import { AuthModule } from './auth/auth.module';
   }),
   TypeOrmModule.forFeature( [User]),
   UsersModule,
-  AuthModule
+  AuthModule,
+  HealthModule,
+  TerminusModule,
   ],
   controllers: [AppController],
   providers: [AppService],

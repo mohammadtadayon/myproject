@@ -10,6 +10,8 @@ import { User } from 'src/users/entities/user.entity';
 import { UserService } from 'src/users/users.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleStrategy } from './google.strategy';
+import { RedisService } from 'src/redis/redis.service';
+import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
  imports: [
@@ -30,9 +32,10 @@ import { GoogleStrategy } from './google.strategy';
     
   }),
       TypeOrmModule.forFeature([User]),
-    UsersModule
+    UsersModule,
+    RedisModule
   ],
-  providers: [AuthService, JwtStrategy,UserService,GoogleStrategy],
+  providers: [AuthService, JwtStrategy,UserService,GoogleStrategy,RedisService],
   controllers: [AuthController],
   exports: [AuthService],
 })

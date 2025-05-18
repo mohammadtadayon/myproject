@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import Redis from 'ioredis';
 
 @Injectable()
 export class UserService {
@@ -70,4 +71,5 @@ export class UserService {
  async finnAll(): Promise<User[]> {
   return this.userRepository.find();
  }
-}
+ }
+

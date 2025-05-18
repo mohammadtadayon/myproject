@@ -7,6 +7,7 @@ import { User } from 'src/users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { RedisService } from 'src/redis/redis.service';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
     private jwtService: JwtService,
     @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        private redisService: RedisService,
   ) {}
 
   async login(loginUserDto: LoginUserDto) {
@@ -38,5 +40,11 @@ export class AuthService {
 
   async register(createUserDto: CreateUserDto) {
     return await this.userService.register(createUserDto);
+  }
+   async logout(token: string): Promise<void> {
+    const client = this.redisService.getClient();
+    const expiresIn = 60 * 60; 
+
+    await client.set(`blacklist:${token}`, '1', 'EX', expiresIn);
   }
 }

@@ -4,6 +4,7 @@ import { LoginUserDto, TokenResponseDto } from 'src/users/dto/login-user.dto';
 import { CreateUserDto, FindAllDto } from 'src/users/dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from './JwtAuthGuard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -59,5 +60,16 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req) {
     return req.user;
+  }
+
+    @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  @ApiBearerAuth()
+  async logout(@Req() req) {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (token) {
+      await this.authService.logout(token);
+    }
+    return { message: 'Logged out successfully' };
   }
 }
